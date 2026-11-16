@@ -1,0 +1,47 @@
+% Compilar desde latex/ejemplo con XeLaTeX, LuaLaTeX o Tectonic (2 pasadas si hace falta).
+% Ejemplo ilustrativo — precios ficticios.
+\documentclass[11pt,a4paper]{article}
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+\usepackage{tecnicocobre}
+\hypersetup{
+  pdftitle={Presupuesto ejemplo — kit de laboratorio},
+  pdfauthor={presupuesto-ar}
+}
+\begin{document}
+
+\PresupuestoEncabezado{Kit de laboratorio · ejemplo}{%
+  Fecha de consulta: 16 de noviembre de 2026.\\
+  Ámbito: precios de consumidor final en Argentina.}
+
+\NotaIva
+
+\section*{Detalle}
+\begin{tabularx}{\linewidth}{@{}C L R R c@{}}
+\cabeceracobre
+\textbf{\#} & \textbf{Componente} & \textbf{Unitario} & \textbf{Subtotal} & \textbf{Ref.} \\
+\midrule
+1 & Tubos Eppendorf 1{,}5\,ml (pack 500) & \$12.450 & \$12.450 & F01 \\
+2 & Guantes nitrilo M (caja 100) & \$8.990 & \$8.990 & F02 \\
+3 & Alcohol etílico 96\,\% 1\,L & \$3.200 & \$3.200 & F03 \\
+\bottomrule
+\end{tabularx}
+
+\vspace{4mm}
+\NoEncontrado{Centrifuga de mesa XYZ-999 (modelo exacto)}
+
+\TotalPresupuesto{\$24.640}
+
+\section*{Fuentes}
+\begin{itemize}
+  \item \textbf{F01} · Mercado Libre · consultado 2026-11-16 · \url{https://www.mercadolibre.com.ar/}
+  \item \textbf{F02} · Mercado Libre · consultado 2026-11-16 · \url{https://www.mercadolibre.com.ar/}
+  \item \textbf{F03} · tienda AR alternativa · consultado 2026-11-16 · \url{https://www.mercadolibre.com.ar/}
+\end{itemize}
+
+{\footnotesize\color{muted}
+Cada ítem se buscó por nombre exacto y se revalidó el precio en la ficha (2--3 lecturas). Los importes incluyen IVA según la publicación. Este PDF es referencia de mercado, no cotización formal ni orden de compra.
+\par}
+
+\end{document}

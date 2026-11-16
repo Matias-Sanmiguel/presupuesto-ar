@@ -1,0 +1,98 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tecnicocobre}[2026/11/16 v1.1 Estilo Tecnico Cobre — presupuestos]
+% Requiere XeLaTeX, LuaLaTeX o Tectonic.
+\RequirePackage{iftex}
+\ifPDFTeX
+  \PackageError{tecnicocobre}{Este estilo requiere XeLaTeX o LuaLaTeX}{Selecciona XeLaTeX como compilador.}
+\fi
+\RequirePackage[margin=2.3cm,includeheadfoot]{geometry}
+\RequirePackage{fontspec}
+\IfFileExists{fonts/NimbusSans-Regular.otf}{
+  \setmainfont{NimbusSans}[Path=fonts/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+  \setsansfont{NimbusSans}[Path=fonts/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+}{
+  \IfFileExists{../fonts/NimbusSans-Regular.otf}{
+    \setmainfont{NimbusSans}[Path=../fonts/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+    \setsansfont{NimbusSans}[Path=../fonts/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+  }{\setmainfont{Nimbus Sans}\setsansfont{Nimbus Sans}}
+}
+\IfFileExists{fonts/JetBrainsMono-Regular.ttf}{
+  \setmonofont{JetBrainsMono}[Path=fonts/,Extension=.ttf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+}{
+  \IfFileExists{../fonts/JetBrainsMono-Regular.ttf}{
+    \setmonofont{JetBrainsMono}[Path=../fonts/,Extension=.ttf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic]
+  }{\setmonofont{JetBrains Mono}}
+}
+\RequirePackage[spanish,es-tabla,es-noquoting]{babel}
+\RequirePackage{amsmath,amssymb,booktabs,xcolor,titlesec,fancyhdr,enumitem}
+\RequirePackage{graphicx,caption,colortbl,tabularx,longtable,array,xurl,microtype,needspace}
+\RequirePackage[unicode,colorlinks=true,breaklinks=true]{hyperref}
+\definecolor{cobre}{HTML}{A65F38}
+\definecolor{ink}{HTML}{1A1A1A}
+\definecolor{muted}{HTML}{5C5C5C}
+\definecolor{rule}{HTML}{C9B2A3}
+\colorlet{accent}{cobre}
+\color{ink}
+\hypersetup{linkcolor=cobre,citecolor=cobre,urlcolor=cobre}
+\urlstyle{same}
+\titleformat{\section}{\sffamily\bfseries\large\color{cobre}}{}{0pt}{}
+\titleformat{\subsection}{\sffamily\bfseries\normalsize\color{ink}}{}{0pt}{}
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+\captionsetup{font=small,labelfont=bf}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{muted}PRESUPUESTO}
+\fancyhead[R]{\footnotesize\sffamily\color{muted}Técnico · Cobre}
+\fancyfoot[C]{\small\color{muted}\thepage}
+\setlength{\headheight}{17pt}
+\renewcommand{\headrule}{{\color{cobre}\hrule width\headwidth height0.7pt\relax}}
+\renewcommand{\footrulewidth}{0pt}
+\linespread{1.10}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\renewcommand{\arraystretch}{1.35}
+\setlength{\tabcolsep}{8pt}
+\setlength{\arrayrulewidth}{0.4pt}
+\arrayrulecolor{rule}
+\setlength{\emergencystretch}{2em}
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+\setlist[itemize]{leftmargin=4.5mm,itemsep=2pt,topsep=3pt,parsep=0pt,label=\textcolor{cobre}{\textbullet}}
+
+\newcommand{\cabeceracobre}{\rowcolor{cobre!12}}
+\newcommand{\lineacobre}{\par\noindent{\color{cobre}\rule{\linewidth}{1.2pt}}\par}
+\newcommand{\lineasuave}{\par\noindent{\color{rule}\rule{\linewidth}{0.4pt}}\par}
+
+% --- Presupuesto ---
+\newcommand{\PresupuestoEncabezado}[2]{%
+  \par\vspace*{2mm}%
+  {\footnotesize\sffamily\color{cobre}\bfseries PRESUPUESTO\par}%
+  \vspace{2mm}\lineacobre\vspace{4mm}%
+  {\sffamily\bfseries\Large #1\par}%
+  \vspace{2mm}%
+  {\small\color{muted}#2\par}%
+  \vspace{3mm}\lineasuave\vspace{4mm}%
+}
+
+\newcommand{\NotaIva}{%
+  {\small\color{muted}Precios a consumidor final en pesos argentinos (ARS), IVA incluido, según la ficha pública consultada.\par}%
+}
+
+\newcommand{\TotalPresupuesto}[1]{%
+  \par\needspace{3\baselineskip}%
+  \vspace{4mm}\lineacobre\vspace{3mm}%
+  {\sffamily\bfseries\large Total estimado\quad\textcolor{cobre}{#1}\par}%
+  {\footnotesize\color{muted}IVA incluido · referencia de mercado, no es orden de compra.\par}%
+}
+
+\newcommand{\NoEncontrado}[1]{%
+  \par\noindent\textcolor{cobre}{\bfseries No encontrado:}\ #1\par%
+}
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p{2.6cm}}
+\newcolumntype{C}{>{\centering\arraybackslash}p{1.1cm}}
+
+\endinput

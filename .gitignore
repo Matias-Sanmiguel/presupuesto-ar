@@ -1,0 +1,16 @@
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+.DS_Store
+node_modules/
+.env
+.env.*
+presupuestos/*/
+!presupuestos/.gitkeep
+# Impeccable engine binary (reinstall: npx impeccable install --project)
+.cursor/skills/impeccable/scripts/bin/
