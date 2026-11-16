@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install presupuesto-ar into Cursor and/or Codex skill directories.
+# Install presupuesto-ar into Cursor, Codex, and/or Claude Code skill directories.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -10,22 +10,24 @@ usage() {
   cat <<'EOF'
 Usage: ./scripts/install.sh [options]
 
-Install the presupuesto-ar agent skill for Cursor and/or Codex.
+Install the presupuesto-ar agent skill for Cursor, Codex, and/or Claude Code.
 
 Options:
   --cursor          Install for Cursor
   --codex           Install for Codex
-  --project         Project scope (default): .cursor/skills or .codex/skills
-  --user            User scope: ~/.cursor/skills or ~/.codex/skills
+  --claude          Install for Claude Code
+  --project         Project scope (default)
+  --user            User scope (~/.cursor|~/.codex|~/.claude)
   --force           Replace an existing install
   -h, --help        Show this help
 
-With no --cursor/--codex flags, installs both.
+With no harness flags, installs Cursor + Codex + Claude.
 EOF
 }
 
 DO_CURSOR=0
 DO_CODEX=0
+DO_CLAUDE=0
 SCOPE="project"
 FORCE=0
 
@@ -33,6 +35,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --cursor) DO_CURSOR=1; shift ;;
     --codex) DO_CODEX=1; shift ;;
+    --claude|--claude-code) DO_CLAUDE=1; shift ;;
     --project) SCOPE="project"; shift ;;
     --user|--global) SCOPE="user"; shift ;;
     --force) FORCE=1; shift ;;
@@ -41,9 +44,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ "$DO_CURSOR" -eq 0 && "$DO_CODEX" -eq 0 ]]; then
+if [[ "$DO_CURSOR" -eq 0 && "$DO_CODEX" -eq 0 && "$DO_CLAUDE" -eq 0 ]]; then
   DO_CURSOR=1
   DO_CODEX=1
+  DO_CLAUDE=1
 fi
 
 if [[ ! -f "${SRC}/SKILL.md" ]]; then
@@ -62,7 +66,6 @@ link_or_copy() {
       return 0
     fi
   fi
-  # Prefer a relative symlink so the repo stays portable.
   local rel
   rel="$(realpath --relative-to="$(dirname "$dest")" "$SRC" 2>/dev/null || true)"
   if [[ -n "$rel" ]] && ln -s "$rel" "$dest" 2>/dev/null; then
@@ -96,10 +99,21 @@ install_codex() {
   link_or_copy "$dest"
 }
 
+install_claude() {
+  local dest
+  if [[ "$SCOPE" == "user" ]]; then
+    dest="${HOME}/.claude/skills/${NAME}"
+  else
+    dest="${ROOT}/.claude/skills/${NAME}"
+  fi
+  link_or_copy "$dest"
+}
+
 [[ "$DO_CURSOR" -eq 1 ]] && install_cursor
 [[ "$DO_CODEX" -eq 1 ]] && install_codex
+[[ "$DO_CLAUDE" -eq 1 ]] && install_claude
 
 echo
 echo "Done. Scope=${SCOPE}."
 echo "Canonical skill: ${SRC}"
-echo "In Cursor / Codex, ask for a presupuesto AR (3 URLs per item, LaTeX cobre)."
+echo "In Cursor / Codex / Claude Code: ask for a presupuesto AR (3 URLs per item)."

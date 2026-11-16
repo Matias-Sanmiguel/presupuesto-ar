@@ -11,7 +11,7 @@ description: >-
 # Presupuesto AR (LaTeX · cobre)
 
 ## When to use
-User wants a local Argentine quote for named components (Cursor, Codex, or any agent that loads this skill) → produce delivery-ready `.tex` + PDF styled with `latex/tecnicocobre.sty`.
+User wants a local Argentine quote for named components (Cursor, Codex, Claude Code, or any agent that loads this skill) → produce delivery-ready `.tex` + PDF styled with `latex/tecnicocobre.sty`.
 
 ## Non-negotiables
 1. **Solo páginas argentinas** (`.com.ar` o tiendas con precio en ARS para comprador local).
