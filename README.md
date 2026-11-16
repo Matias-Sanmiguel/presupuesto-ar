@@ -1,56 +1,68 @@
 # presupuesto-ar
 
-Skill de Cursor para armar **presupuestos en LaTeX/PDF** con precios de **consumidor final en Argentina** (IVA incluido), estilo **Técnico Cobre**.
+Agent skill for **Cursor** and **Codex**: Argentine consumer-price quotes as delivery-ready LaTeX/PDF.
 
-## Qué hace
-- Toma una lista de componentes **por nombre exacto**
-- Busca en páginas AR (Mercado Libre preferido; otras tiendas si hace falta)
-- Revalida cada precio **2–3 veces**
-- Genera `.tex` + `.pdf` en `presupuestos/`
-- Si no hay match exacto, lo declara (`No encontrado`)
+Exact component names. **Three product URLs per line item.** Copper print style.
 
-## Uso en Cursor
-La skill vive en `.cursor/skills/presupuesto-ar/`. Pedí por ejemplo:
+Repo: [github.com/Matias-Sanmiguel/presupuesto-ar](https://github.com/Matias-Sanmiguel/presupuesto-ar)
 
-> Armá un presupuesto AR para: Ryzen 5 5600, B550M, 16GB DDR4 3200
+---
 
-El agente sigue `SKILL.md`, usa `latex/tecnicocobre.sty` y la plantilla del skill.
-
-## Estilo
-- `latex/tecnicocobre.sty` — identidad cobre (`#A65F38`), Nimbus Sans, JetBrains Mono
-- `DESIGN.md` — sistema visual (Impeccable)
-- Fuentes tipográficas en `latex/fonts/` (ver licencias ahí)
-
-## Compilar el ejemplo
-Requiere XeLaTeX, LuaLaTeX o Tectonic:
+## Install
 
 ```bash
-cd latex/ejemplo
-# asegurar que ../tecnicocobre.sty y ../fonts resuelvan; o:
-xelatex -interaction=nonstopmode <<'EOF'
-\documentclass{article}
-\makeatletter\def\input@path{{../}}\makeatother
-\usepackage{tecnicocobre}
-\begin{document}ok\end{document}
-EOF
+git clone https://github.com/Matias-Sanmiguel/presupuesto-ar.git
+cd presupuesto-ar
+chmod +x scripts/install.sh
+./scripts/install.sh                 # Cursor + Codex, this project
+./scripts/install.sh --cursor --user # Cursor only, global (~/.cursor/skills)
+./scripts/install.sh --codex --user  # Codex only, global (~/.codex/skills)
+./scripts/install.sh --force         # replace existing install
 ```
 
-Más simple: desde `latex/ejemplo` con path fix en el `.tex` (ver skill template), o:
+| Target | Project | User |
+| --- | --- | --- |
+| Cursor | `.cursor/skills/presupuesto-ar` | `~/.cursor/skills/presupuesto-ar` |
+| Codex | `.codex/skills/presupuesto-ar` | `~/.codex/skills/presupuesto-ar` |
 
-```bash
-cd latex && xelatex -output-directory=ejemplo ejemplo/presupuesto.tex
+Canonical source: `skills/presupuesto-ar/`. The installer symlinks (or copies) it into the harness folders.
+
+---
+
+## Use
+
+Ask the agent:
+
+> Armá un presupuesto AR para: ESP32 ×3, protoboard 830, kit Dupont
+
+It will search Argentine listings (Mercado Libre first), put **exactly 3 URLs** per item in the PDF, re-check the quoted price, and write `.tex` + `.pdf` under `presupuestos/`.
+
+Rules: [`skills/presupuesto-ar/SKILL.md`](skills/presupuesto-ar/SKILL.md)
+
+---
+
+## Layout
+
+```
+skills/presupuesto-ar/   # SKILL.md + template.tex
+latex/                   # tecnicocobre.sty + fonts
+presupuestos/            # generated quotes
+scripts/install.sh       # Cursor / Codex installer
+DESIGN.md                # visual system
 ```
 
-(ajustá `\usepackage` / `\input@path` según cómo compiles).
+Compile with XeLaTeX, LuaLaTeX, or Tectonic (`latex/ejemplo/presupuesto.tex`).
 
-## Impeccable
-Skills Impeccable en `.cursor/skills/impeccable/` (el binario del engine no se versiona). Tras clonar:
+---
 
-```bash
-npx impeccable install -y --project --providers=cursor
-```
+## Design
 
-`DESIGN.md` fija el sistema visual del presupuesto (jerarquía cobre, anti-slop).
+Print-first copper identity — [`DESIGN.md`](DESIGN.md).
 
-## Licencia
-Código y skill: MIT (ver `LICENSE`). Tipografías: ver `latex/fonts/*LICENCIA*`.
+Accent `#B86A3D`, slate titles, sand table bands. Delivery PDF: no agent process notes; references carry three links per item.
+
+---
+
+## License
+
+MIT (`LICENSE`). Fonts: `latex/fonts/*LICENCIA*`.

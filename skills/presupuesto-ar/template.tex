@@ -1,0 +1,38 @@
+% Plantilla entrega — 3 URLs por ítem (obligatorio).
+\documentclass[11pt,a4paper]{article}
+\makeatletter
+\def\input@path{{../../latex/}{../latex/}{latex/}{./}}
+\makeatother
+\usepackage{tecnicocobre}
+\SetPresupuestoFecha{FECHA_CORTA}
+\hypersetup{
+  pdftitle={Presupuesto — TITULO},
+  pdfauthor={Presupuesto AR}
+}
+\begin{document}
+
+\PresupuestoEncabezado{TITULO}{%
+  Fecha: FECHA.\\
+  Cotización de referencia en tiendas argentinas · consumidor final.}
+
+\NotaIva
+
+\section*{Detalle}
+\begin{tabularx}{\linewidth}{@{}C L R R c@{}}
+\cabeceracobre
+\textbf{\#} & \textbf{Componente} & \textbf{Unitario} & \textbf{Subtotal} & \textbf{Ref.} \\
+\midrule
+1 & COMPONENTE & \$0 & \$0 & F01 \\
+\bottomrule
+\end{tabularx}
+
+\TotalPresupuesto{\$0}
+
+\section*{Referencias}
+{\footnotesize
+\begin{itemize}
+  \FuenteTres{F01}{Tienda — producto \$0}{https://a.ejemplo/}{https://b.ejemplo/}{https://c.ejemplo/}
+\end{itemize}
+}
+
+\end{document}
